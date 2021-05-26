@@ -8,6 +8,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * 影片首页查询接口
+ */
 @Data
 public class FilmIndexVO implements Serializable {
     private List<BannerVO> banner;

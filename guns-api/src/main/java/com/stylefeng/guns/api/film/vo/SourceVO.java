@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 影片条件列表查询接口
+ */
 @Data
 public class SourceVO implements Serializable {
     private String sourceId;

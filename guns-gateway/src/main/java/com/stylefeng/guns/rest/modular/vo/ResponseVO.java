@@ -10,7 +10,8 @@ public class ResponseVO<M> {
     private String msg;
     // 返回数据实体;
     private M data;
-
+    // 图片URL
+    private String imgPre;
 
     private ResponseVO(){}
 
@@ -19,10 +20,15 @@ public class ResponseVO<M> {
         ResponseVO responseVO = new ResponseVO();
         responseVO.setStatus(0);
         responseVO.setData(m);
-
         return responseVO;
     }
-
+    public static<M> ResponseVO success(String imgPre,M m){
+        ResponseVO responseVO = new ResponseVO();
+        responseVO.setStatus(0);
+        responseVO.setData(m);
+        responseVO.setImgPre(imgPre);
+        return responseVO;
+    }
     public static<M> ResponseVO success(String msg){
         ResponseVO responseVO = new ResponseVO();
         responseVO.setStatus(0);

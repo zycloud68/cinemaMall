@@ -31,4 +31,8 @@ public interface FilmServiceApi {
     // 3. 获取年份条件 yearInfo
     List<YearVO> getYears();
 
+    /**
+     * 3、影片查询接口
+     */
+
 }

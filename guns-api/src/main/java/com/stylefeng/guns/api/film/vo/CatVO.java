@@ -5,6 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
+ * 类型
  * 影片条件列表查询接口
  */
 @Data

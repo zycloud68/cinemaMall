@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.stylefeng.guns.api.film.FilmServiceApi;
 import com.stylefeng.guns.api.film.vo.CatVO;
 import com.stylefeng.guns.api.film.vo.SourceVO;
+import com.stylefeng.guns.api.film.vo.YearVO;
 import com.stylefeng.guns.rest.modular.film.vo.FilmConditionVO;
 import com.stylefeng.guns.rest.modular.film.vo.FilmIndexVO;
 import com.stylefeng.guns.rest.modular.vo.ResponseVO;
@@ -105,7 +106,37 @@ public class FilmController {
             sourceResult.add(sourceVO);
         }
         // 年代集合 yearInfo
-
-    return ResponseVO.success(filmConditionVO);
+        List<YearVO> years = filmServiceApi.getYears();
+        List<YearVO> yearResult = new ArrayList<>();
+        flag = false;
+        YearVO yearVO= null;
+        for (YearVO year : years) {
+            if (year.getYearId().equals("99")){
+                // 默认值为99,则显示全部信息
+                yearVO =year;
+                continue;
+            }
+            if (year.getYearId().equals(yearId)){
+                flag = true;
+                // 只显示当前年份的信息
+                year.setActive(true);
+            }else{
+                // 显示全部信息
+                year.setActive(false);
+            }
+            yearResult.add(year);
+        }
+        // 如果不存在的话,则默认将全部变为Active状态
+        if (!flag){
+            yearVO.setActive(true);
+            yearResult.add(yearVO);
+        }else{
+            yearVO.setActive(false);
+            yearResult.add(yearVO);
+        }
+        filmConditionVO.setCatInfo(catResult);
+        filmConditionVO.setSourceInfo(sourceResult);
+        filmConditionVO.setYearInfo(yearResult);
+        return ResponseVO.success(filmConditionVO);
     }
 }

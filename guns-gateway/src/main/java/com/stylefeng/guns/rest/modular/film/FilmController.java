@@ -31,9 +31,10 @@ public class FilmController {
         // 获取banner信息
         filmIndexVO.setBanner(filmServiceApi.getBanners());
         // 获取正在热映的电影
-        filmIndexVO.setHotFilms(filmServiceApi.getHotFilms(true,8));
+        filmIndexVO.setHotFilms(filmServiceApi.getHotFilms(true,8,1,1,99,99,99));
         // 获取即将上映的电影
-        filmIndexVO.setSoonFilms(filmServiceApi.getSoonFilms(true,8));
+        filmIndexVO.setSoonFilms(filmServiceApi.getSoonFilms(true,8,1,1,99,99,99));
+
         // 获取票房排行
         filmIndexVO.setBoxRanking(filmServiceApi.getBoxRanking());
         // 获取最受期待的电影
@@ -139,4 +140,5 @@ public class FilmController {
         filmConditionVO.setYearInfo(yearResult);
         return ResponseVO.success(filmConditionVO);
     }
+    //
 }

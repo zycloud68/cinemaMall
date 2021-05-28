@@ -48,6 +48,190 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
         return result;
     }
     /**
+     * 判断是否是首页需要的内容
+     * 1 如果是,则限制首页显示的条数,限制为热映影片
+     * 2 不是,则为列表页,同样需要限制内容为热映影片,但是没有条数限制
+     * @param isLimit
+     * @param nums
+     * @return
+     */
+    @Override
+    public FilmVO getHotFilms(boolean isLimit, int nums, int nowPage, int sortId,int sourceId, int yearId, int catId) {
+        FilmVO filmVO = new FilmVO();
+        List<FilmInfo> filmInfo = new ArrayList<>();
+        // 热映影片的限制条件
+        EntityWrapper<MoocFilmT> wrapper = new EntityWrapper<>();
+        wrapper.eq("film_status","1");
+        // 判断是否是首页需要的内容
+        if (isLimit){
+            // 如果是,则限制条数,限制显示的内容为热映影片
+            Page<MoocFilmT> page = new Page<>(1,nums); // 显示为第一页
+            List<MoocFilmT> moocFilms = moocFilmTMapper.selectPage(page, wrapper);
+            filmInfo = getFilmInfo(moocFilms);
+            filmVO.setFilmNum(moocFilms.size());
+            filmVO.setFilmInfo(filmInfo);
+
+        }else {
+            Page<MoocFilmT> page = null;
+            // 根据sortId的不同，来组织不同的Page对象
+            // 1-按热门搜索，2-按时间搜索，3-按评价搜索
+            switch (sortId){
+                case 1: //按照热门-->就是票房成绩
+                    page= new Page<>(nowPage,nums,"film_box_office");
+                    break;
+                case 2:  // 2-按时间搜索
+                    page = new Page<>(nowPage,nums,"film_time");
+                    break;
+                case 3: //3-按评价搜索
+                    page = new Page<>(nowPage,nums,"film_score");
+                    break;
+                default: //按照票房排行
+                    page  = new Page<>(nowPage,nums,"film_box_office");
+                    break;
+            }
+            // 如果sourceId,yearId,catId 不为99 ,则表示要按照对应的编号进行查询
+            if (sourceId !=99){
+                wrapper.eq("film_source",sortId);
+            }
+            if (catId !=99){
+                // 一个电影可以有多个类型 数据库当中是按照 #2#4#22来排序的
+                // 我们首先应当创建字符串
+                String catStr = "%#"+catId+"#%";
+                wrapper.like("film_cats",catStr);
+            }
+            if (yearId !=99){
+                wrapper.eq("film_date",yearId);
+            }
+            // 获取当前页数的方法
+            List<MoocFilmT> moocFilms = moocFilmTMapper.selectPage(page, wrapper);
+            // 组织 filmsInfo
+            filmInfo = getFilmInfo(moocFilms);
+            filmVO.setFilmNum(moocFilms.size());
+            // 获取总数
+            Integer totalCounts = moocFilmTMapper.selectCount(wrapper);
+            // 根据条件展示的的页面数
+            int totalPages = (totalCounts/nums) +1; //默认从第一页开始展示
+            filmVO.setFilmInfo(filmInfo);
+            filmVO.setNowPage(nowPage);
+            filmVO.setTotalPage(totalPages);
+        }
+        return filmVO;
+    }
+
+    @Override
+    public FilmVO getSoonFilms(boolean isLimit, int nums, int nowPage, int sourceId,int sortId, int yearId, int catId) {
+        FilmVO filmVO = new FilmVO();
+        List<FilmInfo> filmInfo = new ArrayList<>();
+        // 热映影片的限制条件
+        EntityWrapper<MoocFilmT> wrapper = new EntityWrapper<>();
+        wrapper.eq("film_status","2");
+        // 判断是否是首页需要的内容
+        if (isLimit){
+            // 如果是,则限制条数,限制显示的内容为热映影片
+            Page<MoocFilmT> page = new Page<>(1,nums); // 显示为第一页
+            List<MoocFilmT> moocFilms = moocFilmTMapper.selectPage(page, wrapper);
+            filmInfo = getFilmInfo(moocFilms);
+            filmVO.setFilmNum(moocFilms.size());
+            filmVO.setFilmInfo(filmInfo);
+
+        }else {
+            Page<MoocFilmT> page = null;
+            // 根据sortId的不同，来组织不同的Page对象
+            // 1-按热门搜索，2-按时间搜索，3-按评价搜索
+            switch (sortId){
+                case 1:
+                    // 为上映就是按照预售成绩来排名
+                    page = new Page<>(nowPage,nums,"film_preSaleNum");
+                    break;
+                case 2:
+                    // 按照时间搜索
+                    page = new Page<>(nowPage,nums,"film_time");
+                    break;
+                case 3:
+                    // 按照评价搜索
+                    page = new Page<>(nowPage,nums,"film_preSaleNum");
+                    break;
+                default:
+                    page = new Page<>(nowPage,nums,"film_preSaleNum");
+                    break;
+            }
+            // 如果sourceId,yearId,catId 不为99 ,则表示要按照对应的编号进行查询
+            if (sourceId !=99){
+                wrapper.eq("film_source",sortId);
+            }
+            if (yearId !=99){
+                wrapper.eq("film_date",yearId);
+            }
+            if (catId !=99){
+                // 电影分为多种类型 比如一部电影拥有 爱情,战争等等
+                String catStr = "%#"+catId+"#%";
+                wrapper.eq("film_cats",catStr);
+            }
+            List<MoocFilmT> moocFilms = moocFilmTMapper.selectPage(page, wrapper);
+            filmInfo = getFilmInfo(moocFilms);
+            filmVO.setFilmNum(moocFilms.size()); //获取其总数
+            Integer totalCounts = moocFilmTMapper.selectCount(wrapper);
+            int totalPages = (totalCounts/nums)+1; // 默认从第一页开始显示
+            filmVO.setFilmInfo(filmInfo);
+            filmVO.setNowPage(nowPage);
+            filmVO.setTotalPage(totalPages);
+
+        }
+        return filmVO;
+    }
+
+    @Override
+    public FilmVO getClassicFilms(int nums, int nowPage, int sortId, int sourceId, int yearId, int catId) {
+        FilmVO filmVO = new FilmVO();
+        List<FilmInfo> filmInfo = new ArrayList<>();
+        // 热映影片的限制条件
+        EntityWrapper<MoocFilmT> wrapper = new EntityWrapper<>();
+        wrapper.eq("film_status","3");
+        // 判断是否是首页需要的内容
+        Page<MoocFilmT> page = null;
+        // 根据sortId的不同，来组织不同的Page对象
+        // 1-按热门搜索，2-按时间搜索，3-按评价搜索
+        switch (sortId){
+            case 1:
+                // 为上映就是按照预售成绩来排名
+                page = new Page<>(nowPage,nums,"film_box_office");
+                break;
+            case 2:
+                // 按照时间搜索
+                page = new Page<>(nowPage,nums,"film_time");
+                break;
+            case 3:
+                // 按照评价搜索
+                page = new Page<>(nowPage,nums,"film_score");
+                break;
+            default:
+                page = new Page<>(nowPage,nums,"film_box_office");
+                break;
+        }
+        // 如果sourceId,yearId,catId 不为99 ,则表示要按照对应的编号进行查询
+        if (sourceId !=99){
+            wrapper.eq("film_source",sortId);
+        }
+        if (yearId !=99){
+            wrapper.eq("film_date",yearId);
+        }
+        if (catId !=99){
+            // 电影分为多种类型 比如一部电影拥有 爱情,战争等等
+            String catStr = "%#"+catId+"#%";
+            wrapper.eq("film_cats",catStr);
+        }
+        List<MoocFilmT> moocFilms = moocFilmTMapper.selectPage(page, wrapper);
+        filmInfo = getFilmInfo(moocFilms);
+        filmVO.setFilmNum(moocFilms.size()); //获取其总数
+        Integer totalCounts = moocFilmTMapper.selectCount(wrapper);
+        int totalPages = (totalCounts/nums)+1; // 默认从第一页开始显示
+        filmVO.setFilmInfo(filmInfo);
+        filmVO.setNowPage(nowPage);
+        filmVO.setTotalPage(totalPages);
+        return filmVO;
+    }
+
+    /**
      * 这里是热播影片和即将上映电影的公共接口
      */
     private List<FilmInfo> getFilmInfo(List<MoocFilmT> moocFilm){
@@ -67,63 +251,6 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
             filmInfos.add(info);
         }
         return filmInfos;
-    }
-    /**
-     * 判断是否是首页需要的内容
-     * 1 如果是,则限制首页显示的条数,限制为热映影片
-     * 2 不是,则为列表页,同样需要限制内容为热映影片,但是没有条数限制
-     * @param isLimit
-     * @param nums
-     * @return
-     */
-    @Override
-    public FilmVO getHotFilms(boolean isLimit, int nums) {
-        FilmVO filmVO = new FilmVO();
-        List<FilmInfo> filmInfo = new ArrayList<>();
-        // 热映影片的限制条件
-        EntityWrapper<MoocFilmT> wrapper = new EntityWrapper<>();
-        wrapper.eq("film_status","1");
-        // 判断是否是首页需要的内容
-        if (isLimit){
-            // 如果是,则限制条数,限制显示的内容为热映影片
-           Page<MoocFilmT> page = new Page<>(1,nums); // 显示为第一页
-            List<MoocFilmT> moocFilms = moocFilmTMapper.selectPage(page, wrapper);
-            filmInfo = getFilmInfo(moocFilms);
-            filmVO.setFilmNum(moocFilms.size());
-            filmVO.setFilmInfo(filmInfo);
-
-        }else {
-            /**
-             * TODO
-             */
-
-        }
-        return filmVO;
-    }
-
-    @Override
-    public FilmVO getSoonFilms(boolean isLimit, int nums) {
-        FilmVO filmVO = new FilmVO();
-        List<FilmInfo> filmInfo = new ArrayList<>();
-        // 热映影片的限制条件
-        EntityWrapper<MoocFilmT> wrapper = new EntityWrapper<>();
-        wrapper.eq("film_status","2");
-        // 判断是否是首页需要的内容
-        if (isLimit){
-            // 如果是,则限制条数,限制显示的内容为热映影片
-            Page<MoocFilmT> page = new Page<>(1,nums); // 显示为第一页
-            List<MoocFilmT> moocFilms = moocFilmTMapper.selectPage(page, wrapper);
-            filmInfo = getFilmInfo(moocFilms);
-            filmVO.setFilmNum(moocFilms.size());
-            filmVO.setFilmInfo(filmInfo);
-
-        }else {
-            /**
-             * TODO
-             */
-
-        }
-        return filmVO;
     }
 
     /**

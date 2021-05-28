@@ -148,24 +148,33 @@ public class FilmController {
         String img_pre = "http://img.meetingshop.cn/";
         FilmVO filmVO = null;
         // 根据showType判断影片的查询类型 查询类型，1-正在热映，2-即将上映，3-经典电影
-        if (filmRequestVO.getShowType().equals("1")){
-            filmVO = filmServiceApi.getHotFilms(false,
-                    filmRequestVO.getPageSize(), filmRequestVO.getNowPage(),
-                    filmRequestVO.getSortId(), filmRequestVO.getSourceId(),
-                    filmRequestVO.getYearId(), filmRequestVO.getCatId());
-        }
-        if (filmRequestVO.getShowType().equals("2")){
-            filmVO = filmServiceApi.getSoonFilms(false,
-                    filmRequestVO.getPageSize(), filmRequestVO.getNowPage(),
-                    filmRequestVO.getSortId(), filmRequestVO.getSourceId(),
-                    filmRequestVO.getYearId(), filmRequestVO.getCatId());
-        }
-        if (filmRequestVO.getShowType().equals("3")){
-            filmVO = filmServiceApi.getClassicFilms(
-                    filmRequestVO.getPageSize(), filmRequestVO.getNowPage(),
-                    filmRequestVO.getSortId(), filmRequestVO.getSourceId(),
-                    filmRequestVO.getYearId(), filmRequestVO.getCatId());
+        switch (filmRequestVO.getShowType()){
+            case 1 :
+                filmVO = filmServiceApi.getHotFilms(
+                        false,filmRequestVO.getPageSize(),filmRequestVO.getNowPage(),
+                        filmRequestVO.getSortId(),filmRequestVO.getSourceId(),filmRequestVO.getYearId(),
+                        filmRequestVO.getCatId());
+                break;
+            case 2 :
+                filmVO = filmServiceApi.getSoonFilms(
+                        false,filmRequestVO.getPageSize(),filmRequestVO.getNowPage(),
+                        filmRequestVO.getSortId(),filmRequestVO.getSourceId(),filmRequestVO.getYearId(),
+                        filmRequestVO.getCatId());
+                break;
+            case 3 :
+                filmVO = filmServiceApi.getClassicFilms(
+                        filmRequestVO.getPageSize(),filmRequestVO.getNowPage(),
+                        filmRequestVO.getSortId(),filmRequestVO.getSourceId(),
+                        filmRequestVO.getYearId(), filmRequestVO.getCatId());
+                break;
+            default:
+                filmVO = filmServiceApi.getHotFilms(
+                        false,filmRequestVO.getPageSize(),filmRequestVO.getNowPage(),
+                        filmRequestVO.getSortId(),filmRequestVO.getSourceId(),filmRequestVO.getYearId(),
+                        filmRequestVO.getCatId());
+                break;
         }
         return ResponseVO.success(filmVO.getNowPage(),filmVO.getTotalPage(),img_pre,filmVO.getFilmInfo());
+
     }
 }

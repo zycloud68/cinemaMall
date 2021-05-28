@@ -3,10 +3,12 @@ package com.stylefeng.guns.rest.modular.film;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.stylefeng.guns.api.film.FilmServiceApi;
 import com.stylefeng.guns.api.film.vo.CatVO;
+import com.stylefeng.guns.api.film.vo.FilmVO;
 import com.stylefeng.guns.api.film.vo.SourceVO;
 import com.stylefeng.guns.api.film.vo.YearVO;
 import com.stylefeng.guns.rest.modular.film.vo.FilmConditionVO;
 import com.stylefeng.guns.rest.modular.film.vo.FilmIndexVO;
+import com.stylefeng.guns.rest.modular.film.vo.FilmRequestVO;
 import com.stylefeng.guns.rest.modular.vo.ResponseVO;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -140,5 +142,30 @@ public class FilmController {
         filmConditionVO.setYearInfo(yearResult);
         return ResponseVO.success(filmConditionVO);
     }
-    //
+    // 获取getFilms
+    @RequestMapping(value = "getFilms",method = RequestMethod.GET)
+    public ResponseVO getFilms(FilmRequestVO filmRequestVO){
+        String img_pre = "http://img.meetingshop.cn/";
+        FilmVO filmVO = null;
+        // 根据showType判断影片的查询类型 查询类型，1-正在热映，2-即将上映，3-经典电影
+        if (filmRequestVO.getShowType().equals("1")){
+            filmVO = filmServiceApi.getHotFilms(false,
+                    filmRequestVO.getPageSize(), filmRequestVO.getNowPage(),
+                    filmRequestVO.getSortId(), filmRequestVO.getSourceId(),
+                    filmRequestVO.getYearId(), filmRequestVO.getCatId());
+        }
+        if (filmRequestVO.getShowType().equals("2")){
+            filmVO = filmServiceApi.getSoonFilms(false,
+                    filmRequestVO.getPageSize(), filmRequestVO.getNowPage(),
+                    filmRequestVO.getSortId(), filmRequestVO.getSourceId(),
+                    filmRequestVO.getYearId(), filmRequestVO.getCatId());
+        }
+        if (filmRequestVO.getShowType().equals("3")){
+            filmVO = filmServiceApi.getClassicFilms(
+                    filmRequestVO.getPageSize(), filmRequestVO.getNowPage(),
+                    filmRequestVO.getSortId(), filmRequestVO.getSourceId(),
+                    filmRequestVO.getYearId(), filmRequestVO.getCatId());
+        }
+        return ResponseVO.success(filmVO.getNowPage(),filmVO.getTotalPage(),img_pre,filmVO.getFilmInfo());
+    }
 }

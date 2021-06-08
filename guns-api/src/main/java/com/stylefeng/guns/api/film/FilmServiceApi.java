@@ -36,5 +36,7 @@ public interface FilmServiceApi {
     /**
      * 3、影片查询接口
      */
+    // 1. 根据影片id或者名称来获取影片信息
+    FilmDetailVO getFilmDetail(int searchType,String searchParam);
 
 }

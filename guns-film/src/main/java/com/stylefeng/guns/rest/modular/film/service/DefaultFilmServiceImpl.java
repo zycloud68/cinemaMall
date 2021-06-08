@@ -337,5 +337,26 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
         }
          return yearVo;
     }
-    //
+
+    /**
+     * 影片查询接口
+     * 根据影片id或者名称来获取影片信息
+     * @param searchType
+     * @param searchParam
+     * @return
+     */
+    // 获取电影的详细信息
+    @Override
+    public FilmDetailVO getFilmDetail(int searchType, String searchParam) {
+          //searchType : ‘0表示按照编号查找，1表示按照名称查找’
+         FilmDetailVO filmDetailVO = null;
+         // 首先判断输入的类型searchParam是0还是1
+        if (searchType==1){ // 按照电影名称查找
+            filmDetailVO = moocFilmTMapper.getFilmDetailByName(searchParam);
+        }else{ // 按照电影id来查找
+            filmDetailVO = moocFilmTMapper.getFilmDetailById(searchParam);
+        }
+        return filmDetailVO;
+    }
+
 }

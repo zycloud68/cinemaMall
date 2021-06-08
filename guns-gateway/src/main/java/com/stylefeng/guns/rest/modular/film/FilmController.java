@@ -10,10 +10,7 @@ import com.stylefeng.guns.rest.modular.film.vo.FilmConditionVO;
 import com.stylefeng.guns.rest.modular.film.vo.FilmIndexVO;
 import com.stylefeng.guns.rest.modular.film.vo.FilmRequestVO;
 import com.stylefeng.guns.rest.modular.vo.ResponseVO;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -176,5 +173,19 @@ public class FilmController {
         }
         return ResponseVO.success(filmVO.getNowPage(),filmVO.getTotalPage(),img_pre,filmVO.getFilmInfo());
 
+    }
+    /**
+     * 影片查询接口
+     */
+    @RequestMapping(value = "films/{searchParam}",method = RequestMethod.GET)
+    public ResponseVO films(@PathVariable("searchParam") String searchParam,
+                            int searchType){
+        // 请求字段 searchType 0表示按照编号查找,1按照名称查找
+        // 以上分析,有两个方法,根据searchType判断查询类型,不同的查询类型,传入的条件略有不同
+        // 要查询影片的详细信息
+        // 1.根据编号查找
+        // 2.根据名称查找
+
+        return null;
     }
 }

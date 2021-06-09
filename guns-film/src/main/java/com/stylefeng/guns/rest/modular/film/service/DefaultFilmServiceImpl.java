@@ -362,21 +362,20 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
     // 2. 根据影片id来获取电影信息的图片来源
     @Override
     public ImgVO getImgVo(String filmId) {
-
         return null;
     }
-    // 3. 根据影片id来获取电影导演信息
+
+    // 3.1 根据影片id来获取电影导演信息
     @Override
     public ActorVO getDirectorVo(String filmId) {
         return null;
     }
-    // 3. 根据影片id来获取所有电影演员信息
+
+    // 3.2 根据影片id来获取所有电影演员信息
     @Override
     public List<ActorVO> getActors(String filmId) {
         return null;
     }
-
-
 
     // 4. 根据影片Id来获取电影详细描述信息
     @Override

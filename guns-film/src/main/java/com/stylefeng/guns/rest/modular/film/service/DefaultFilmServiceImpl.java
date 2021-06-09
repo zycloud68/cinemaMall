@@ -345,7 +345,7 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
      * @param searchParam
      * @return
      */
-    // 获取电影的详细信息
+    // 1. 获取电影的详细信息
     @Override
     public FilmDetailVO getFilmDetail(int searchType, String searchParam) {
           //searchType : ‘0表示按照编号查找，1表示按照名称查找’
@@ -357,6 +357,31 @@ public class DefaultFilmServiceImpl implements FilmServiceApi {
             filmDetailVO = moocFilmTMapper.getFilmDetailById(searchParam);
         }
         return filmDetailVO;
+    }
+
+    // 2. 根据影片id来获取电影信息的图片来源
+    @Override
+    public ImgVO getImgVo(String filmId) {
+
+        return null;
+    }
+    // 3. 根据影片id来获取电影导演信息
+    @Override
+    public ActorVO getDirectorVo(String filmId) {
+        return null;
+    }
+    // 3. 根据影片id来获取所有电影演员信息
+    @Override
+    public List<ActorVO> getActors(String filmId) {
+        return null;
+    }
+
+
+
+    // 4. 根据影片Id来获取电影详细描述信息
+    @Override
+    public FilmDescVO getFilmDescVo(String filmId) {
+        return null;
     }
 
 }

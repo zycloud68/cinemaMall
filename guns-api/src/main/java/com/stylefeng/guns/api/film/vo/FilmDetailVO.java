@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 @Data
 public class FilmDetailVO implements Serializable {
+    private String filmId; // 影片Id
     private String filmName; // 影片名称
     private String filmEnName; //影片英文名称
     private String imgAddress; //图片地址

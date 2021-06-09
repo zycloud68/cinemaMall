@@ -2,10 +2,7 @@ package com.stylefeng.guns.rest.modular.film;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.stylefeng.guns.api.film.FilmServiceApi;
-import com.stylefeng.guns.api.film.vo.CatVO;
-import com.stylefeng.guns.api.film.vo.FilmVO;
-import com.stylefeng.guns.api.film.vo.SourceVO;
-import com.stylefeng.guns.api.film.vo.YearVO;
+import com.stylefeng.guns.api.film.vo.*;
 import com.stylefeng.guns.rest.modular.film.vo.FilmConditionVO;
 import com.stylefeng.guns.rest.modular.film.vo.FilmIndexVO;
 import com.stylefeng.guns.rest.modular.film.vo.FilmRequestVO;
@@ -180,11 +177,18 @@ public class FilmController {
     @RequestMapping(value = "films/{searchParam}",method = RequestMethod.GET)
     public ResponseVO films(@PathVariable("searchParam") String searchParam,
                             int searchType){
-        // 请求字段 searchType 0表示按照编号查找,1按照名称查找
         // 以上分析,有两个方法,根据searchType判断查询类型,不同的查询类型,传入的条件略有不同
-        // 要查询影片的详细信息
-        // 1.根据编号查找
-        // 2.根据名称查找
+        // 请求字段 searchType 0表示按照编号查找,1按照名称查找
+        // 根据searchType判断类型那个
+        FilmDetailVO filmDetail = filmServiceApi.getFilmDetail(searchType, searchParam);
+        // 判断filmDetail是否为空
+        if (filmDetail ==null){
+            return  ResponseVO.serviceFail("没有可以查询的影片");
+        }else if(filmDetail.getFilmId()==null || filmDetail.getFilmId().trim().length()==0){
+            return  ResponseVO.serviceFail("没有可以查询的影片");
+        }
+        // 上述判断没有问题,则根据filmId来判断
+        String filmId =filmDetail.getFilmId();
 
         return null;
     }

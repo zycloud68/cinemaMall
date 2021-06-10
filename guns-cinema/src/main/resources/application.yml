@@ -10,7 +10,7 @@ jwt:
   md5-key: randomKey      #md5加密混淆key
 
 server:
-  port: 8084 #项目端口
+  port: 8085 #项目端口
 
 mybatis-plus:
   mapper-locations: classpath*:com/stylefeng/guns/rest/**/mapping/*.xml
@@ -27,14 +27,6 @@ mybatis-plus:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #打印sql语句,调试用
 
 spring:
-  application:
-    name: meeting-user
-  dubbo:
-    server: true
-    registry: zookeeper://localhost:2181
-    protocol:
-      name: dubbo
-      port: 20881
   datasource:
       url: jdbc:mysql://zycloud68.mysql.cn-chengdu.rds.aliyuncs.com:3306/guns?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=UTC
       username: zycloud68
@@ -45,4 +37,4 @@ logging:
   level.root: info
   level.com.stylefeng: debug
   path: /Users/codeDemo/guns/logs
-  file: meetingfilm-film.log
+  file: meetingcinema-cinema.log

@@ -20,55 +20,71 @@
     </resultMap>
     <!--根据影片的名称来查询数据信息-->
     <select id="getFilmDetailByName" resultType="com.stylefeng.guns.api.film.vo.FilmDetailVO">
-        select
-        film.uuid AS filmId,
-        film.film_name AS filmName,
-        info.film_en_name AS filmEnName,
-        film.img_address AS imgAddress,
-        info.film_score AS score,
-        info.film_score_num AS scoreNum,
-        film.film_box_office AS totalBox,
-        (select group_concat(show_name separator ',') from mooc_cat_dict_t as t  where find_in_set (t.uuid,(select replace(trim(both '#' from film_cats),'#',',')
-        from mooc_film_t as t where t.uuid=film.uuid))) as info1,
-        concat ((select show_name from mooc_source_dict_t as t where t.uuid=film.uuid),'/',info.film_length,'分钟') as info2,
-        concat ((film.film_time,(select show_name from mooc_source_dict_t as t where t.uuid=film.uuid),'上映') as info3
-        from mooc_film_t as film, mooc_film_info_t as info
-        where film.UUID=info.film_id
-        and film.film_name like  #{filmName}
-<!--官方标准写法-->
-<!--        SELECT-->
+<!--        select-->
 <!--        film.uuid AS filmId,-->
 <!--        film.film_name AS filmName,-->
-<!--        info.`film_en_name` AS filmEnName,-->
-<!--        film.`img_address` AS imgAddress,-->
-<!--        info.`film_score` AS score,-->
-<!--        info.`film_score_num` AS scoreNum,-->
-<!--        film.`film_box_office` AS totalBox,-->
-<!--        (SELECT GROUP_CONCAT(show_name SEPARATOR ',') FROM mooc_cat_dict_t t-->
-<!--        WHERE FIND_IN_SET (t.uuid,-->
-<!--        (SELECT REPLACE(TRIM(BOTH '#' FROM film_cats),'#',',') FROM mooc_film_t t WHERE t.uuid=film.uuid))) AS info01,-->
-<!--        CONCAT((SELECT show_name FROM mooc_source_dict_t t WHERE t.uuid=film.uuid),' / ',info.`film_length`,'分钟') info02,-->
-<!--        CONCAT(film.`film_time`,(SELECT show_name FROM mooc_source_dict_t t WHERE t.uuid=film.uuid),'上映') info03-->
-<!--        FROM mooc_film_t film,mooc_film_info_t info-->
-<!--        WHERE film.`UUID` = info.`film_id`-->
-<!--        AND film.film_name LIKE #{filmName}-->
+<!--        info.film_en_name AS filmEnName,-->
+<!--        film.img_address AS imgAddress,-->
+<!--        info.film_score AS score,-->
+<!--        info.film_score_num AS scoreNum,-->
+<!--        film.film_box_office AS totalBox,-->
+<!--        (select group_concat(show_name separator ',') from mooc_cat_dict_t as t  where find_in_set (t.uuid,(select replace(trim(both '#' from film_cats),'#',',')-->
+<!--        from mooc_film_t as t where t.uuid=film.uuid))) as info1,-->
+<!--        concat ((select show_name from mooc_source_dict_t as t where t.uuid=film.uuid),'/',info.film_length,'分钟') as info2,-->
+<!--        concat ((film.film_time,(select show_name from mooc_source_dict_t as t where t.uuid=film.uuid),'上映') as info3-->
+<!--        from mooc_film_t as film, mooc_film_info_t as info-->
+<!--        where film.UUID=info.film_id-->
+<!--        and film.film_name like  #{filmName}-->
+<!--官方标准写法-->
+        SELECT
+        film.uuid AS filmId,
+        film.film_name AS filmName,
+        info.`film_en_name` AS filmEnName,
+        film.`img_address` AS imgAddress,
+        info.`film_score` AS score,
+        info.`film_score_num` AS scoreNum,
+        film.`film_box_office` AS totalBox,
+        (SELECT GROUP_CONCAT(show_name SEPARATOR ',') FROM mooc_cat_dict_t t
+        WHERE FIND_IN_SET (t.uuid,
+        (SELECT REPLACE(TRIM(BOTH '#' FROM film_cats),'#',',') FROM mooc_film_t t WHERE t.uuid=film.uuid))) AS info01,
+        CONCAT((SELECT show_name FROM mooc_source_dict_t t WHERE t.uuid=film.uuid),' / ',info.`film_length`,'分钟') info02,
+        CONCAT(film.`film_time`,(SELECT show_name FROM mooc_source_dict_t t WHERE t.uuid=film.uuid),'上映') info03
+        FROM mooc_film_t film,mooc_film_info_t info
+        WHERE film.`UUID` = info.`film_id`
+        AND film.film_name LIKE #{filmName}
     </select>
     <!--根据影片的id来查询数据信息-->
     <select id="getFilmDetailById" resultType="com.stylefeng.guns.api.film.vo.FilmDetailVO">
-        select
+<!--        select-->
+<!--        film.uuid AS filmId,-->
+<!--        film.film_name AS filmName,-->
+<!--        info.film_en_name AS filmEnName,-->
+<!--        film.img_address AS imgAddress,-->
+<!--        info.film_score AS score,-->
+<!--        info.film_score_num AS scoreNum,-->
+<!--        film.film_box_office AS totalBox,-->
+<!--        (select group_concat(show_name separator ',') from mooc_cat_dict_t as t  where find_in_set (t.uuid,(select replace(trim(both '#' from film_cats),'#',',')-->
+<!--        from mooc_film_t as t where t.uuid=film.uuid))) as info1,-->
+<!--        concat ((select show_name from mooc_source_dict_t as t where t.uuid=film.uuid),'/',info.film_length,'分钟') as info2,-->
+<!--        concat ((film.film_time,(select show_name from mooc_source_dict_t as t where t.uuid=film.uuid),'上映') as info3-->
+<!--            from mooc_film_t as film, mooc_film_info_t as info-->
+<!--            where film.UUID=info.film_id-->
+<!--           and film.UUID= #{uuid}-->
+        SELECT
         film.uuid AS filmId,
         film.film_name AS filmName,
-        info.film_en_name AS filmEnName,
-        film.img_address AS imgAddress,
-        info.film_score AS score,
-        info.film_score_num AS scoreNum,
-        film.film_box_office AS totalBox,
-        (select group_concat(show_name separator ',') from mooc_cat_dict_t as t  where find_in_set (t.uuid,(select replace(trim(both '#' from film_cats),'#',',')
-        from mooc_film_t as t where t.uuid=film.uuid))) as info1,
-        concat ((select show_name from mooc_source_dict_t as t where t.uuid=film.uuid),'/',info.film_length,'分钟') as info2,
-        concat ((film.film_time,(select show_name from mooc_source_dict_t as t where t.uuid=film.uuid),'上映') as info3
-            from mooc_film_t as film, mooc_film_info_t as info
-            where film.UUID=info.film_id
-           and film.UUID= #{uuid}
+        info.`film_en_name` AS filmEnName,
+        film.`img_address` AS imgAddress,
+        info.`film_score` AS score,
+        info.`film_score_num` AS scoreNum,
+        film.`film_box_office` AS totalBox,
+        (SELECT GROUP_CONCAT(show_name SEPARATOR ',') FROM mooc_cat_dict_t t
+        WHERE FIND_IN_SET (t.uuid,
+        (SELECT REPLACE(TRIM(BOTH '#' FROM film_cats),'#',',') FROM mooc_film_t t WHERE t.uuid=film.uuid))) AS info01,
+        CONCAT((SELECT show_name FROM mooc_source_dict_t t WHERE t.uuid=film.uuid),' / ',info.`film_length`,'分钟') info02,
+        CONCAT(film.`film_time`,(SELECT show_name FROM mooc_source_dict_t t WHERE t.uuid=film.uuid),'上映') info03
+        FROM mooc_film_t film,mooc_film_info_t info
+        WHERE film.`UUID` = info.`film_id`
+        AND film.`UUID` = #{uuid}
     </select>
 </mapper>

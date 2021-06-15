@@ -1,8 +1,14 @@
 package com.stylefeng.guns.api.cinema;
 
-public interface CinemaServiceApi {
-    // 1、根据CinemaQueryVO，查询影院列表
+import com.stylefeng.guns.api.cinema.vo.CinemaRequestVO;
+import com.stylefeng.guns.api.cinema.vo.CinemaVO;
+import com.baomidou.mybatisplus.plugins.Page;
 
+
+public interface CinemaServiceApi {
+
+    // 1、根据CinemaQueryVO，查询影院列表
+    Page<CinemaVO> getCinemas(CinemaRequestVO cinemaRequestVO);
     // 2、根据条件获取品牌列表
 
     // 3、获取行政区域列表

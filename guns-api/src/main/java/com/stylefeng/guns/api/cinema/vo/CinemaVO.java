@@ -11,5 +11,5 @@ public class CinemaVO implements Serializable {
     private String uuid; //影院编号
     private String cinemaName; //影院名称
     private String address; // 影院地址
-    private double minimumPrice;
+    private String minimumPrice;
 }

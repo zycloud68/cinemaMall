@@ -27,6 +27,15 @@ mybatis-plus:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #打印sql语句,调试用
 
 spring:
+  application:
+    name: meeting-cinema
+  dubbo:
+    server: true
+    registry: zookeeper://localhost:2181
+    protocol:
+      name: dubbo
+      port: 20885
+      accepts: 10
   datasource:
       url: jdbc:mysql://zycloud68.mysql.cn-chengdu.rds.aliyuncs.com:3306/guns?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=UTC
       username: zycloud68
@@ -37,4 +46,4 @@ logging:
   level.root: info
   level.com.stylefeng: debug
   path: /Users/codeDemo/guns/logs
-  file: meetingcinema-cinema.log
+  file: meetingCinema-cinema.log

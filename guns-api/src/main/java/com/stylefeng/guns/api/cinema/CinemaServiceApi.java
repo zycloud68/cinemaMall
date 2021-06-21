@@ -1,8 +1,9 @@
 package com.stylefeng.guns.api.cinema;
 
-import com.stylefeng.guns.api.cinema.vo.CinemaRequestVO;
-import com.stylefeng.guns.api.cinema.vo.CinemaVO;
+import com.stylefeng.guns.api.cinema.vo.*;
 import com.baomidou.mybatisplus.plugins.Page;
+
+import java.util.List;
 
 
 public interface CinemaServiceApi {
@@ -10,13 +11,13 @@ public interface CinemaServiceApi {
     // 1、根据CinemaQueryVO，查询影院列表
     Page<CinemaVO> getCinemas(CinemaRequestVO cinemaRequestVO);
     // 2、根据条件获取品牌列表
-
+    List<BrandVO> getBrands(int brandId);
     // 3、获取行政区域列表
-
+    List<AreaVO> getAreas(int areaId);
     // 4、获取影厅类型列表
-
+    List<HallTypeVO> getHallTypes(int hallTypeId);
     // 5、根据影院编号，获取影院信息
-
+    CinemaInfoVO getCinemaInfoById(int cinemaId);
     // 6、获取所有电影的信息和对应的放映场次信息，根据影院编号
 
     // 7、根据影院编号获取影院信息

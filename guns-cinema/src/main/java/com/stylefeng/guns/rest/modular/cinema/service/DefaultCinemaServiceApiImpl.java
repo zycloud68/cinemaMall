@@ -182,6 +182,25 @@ public class DefaultCinemaServiceApiImpl implements CinemaServiceApi {
         cinemaInfoVO.setCinemaId(moocCinemaT.getUuid()+"");
         return cinemaInfoVO;
     }
+    // 获取所有电影的信息和对应的放映场次信息，根据影院编号
+    @Override
+    public List<FilmInfoVO> getFilmInfoByCinemaId(int cinemaId) {
+        List<FilmInfoVO> filmInfoVOList = moocFieldTMapper.getFilmInfos(cinemaId);
+        return filmInfoVOList;
+    }
+   // 根据放映场次ID获取放映信息
+    @Override
+    public HallInfoVO getFilmFieldInfo(int fieldId) {
+        // 这里是单场次
+        HallInfoVO hallInfoVO = moocFieldTMapper.getHallInfos(fieldId);
+        return hallInfoVO;
+    }
+    // 根据放映场次查询播放的电影编号，然后根据电影编号获取对应的电影信息
+    @Override
+    public FilmInfoVO getFilmInfoByFieldId(int fieldId) {
+        FilmInfoVO filmInfoVO = moocFieldTMapper.getFilmInfoById(fieldId);
+        return filmInfoVO;
+    }
 
 
 }

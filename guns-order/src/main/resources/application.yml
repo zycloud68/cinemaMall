@@ -8,6 +8,11 @@ jwt:
   expiration: 604800      #7天 单位:秒
   auth-path: auth         #认证请求的路径
   md5-key: randomKey      #md5加密混淆key
+ftp:
+  host-name: 127.0.0.1 # 主机地址
+  port: 2100   # 主机端口号
+  user-name: ftp  # 主机名称
+  password: ftp
 
 server:
   port: 8086 #订单项目端口
@@ -35,7 +40,6 @@ spring:
     protocol:
       name: dubbo
       port: 20885
-      accepts: 10
   datasource:
       url: jdbc:mysql://zycloud68.mysql.cn-chengdu.rds.aliyuncs.com:3306/guns?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=UTC
       username: zycloud68
